@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .left{
+    width: 50%;
+    text-align: center;
+  } 
+  .right {
+    width: 50%;
+    text-align: center;
+  }
+.details{
+    font-size: larger;
+    text-align: left;
+    font-weight: bolder;
+}  
+.btn{
+    width: 75px;
+    height: 30px;
+    font-size: 14px;
+}

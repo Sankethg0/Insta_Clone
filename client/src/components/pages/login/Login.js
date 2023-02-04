@@ -1,7 +1,9 @@
 import {React,useState,useContext} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import M from 'materialize-css'
-import {userContext} from '../../App'
+import {userContext} from '../../../App'
+import '../../../index.css';
+import './login.css';
 
 const Login = () => {
     const {state,dispatch} = useContext(userContext);
@@ -40,34 +42,45 @@ const Login = () => {
         })
     }
   return (
-    <div className="mycard">
-    <div className="card auth-card input-field">
-      <h2 className="brand-logo">Instagram</h2>
-      <input
-      type="text"
-      placeholder="email"
-      value={email}
-      onChange={(e)=>setEmail(e.target.value)}
-      />
-      <input
-      type="password"
-      placeholder="password"
-      value={password}
-      onChange={(e)=>setPassword(e.target.value)}
-      />
-      <button className="btn waves-effect waves-light #616161 grey darken-2"
-      onClick={()=>PostData()}
-      >
-          Login
-      </button>
-      <h5>
-          <Link to="/signup">Dont have an account ?</Link>
-      </h5>
-      <h6>
-          <Link to="/reset">Forgot password ?</Link>
-      </h6>
-  </div>
-</div>
+        <div className="container">
+            <div className='left'>
+            <div className="card auth-card input-field">
+                    <h2 className="header">LOGIN</h2>
+                    <input
+                        type="text"
+                        placeholder="email"
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
+                        />
+                    <input
+                        type="password"
+                        placeholder="password"
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
+                        />
+                    <button className="btn " onClick={()=>PostData()}>
+                        Login
+                    </button>
+                    
+                    <div className='link-next'>
+                        <Link to="/signup">Dont have an account ?</Link>
+                    </div>
+                        
+                   
+                </div>
+            </div>
+            <div className='right'>
+                <div className='details'>
+                        Surge SE Internship<br/>
+                        March 2023<br/>
+                        Sanketh Gunasekara 
+                </div>
+                      
+            </div>
+                
+                
+        </div>  
+           
   )
 }
 

@@ -37,9 +37,11 @@ const Signup = () => {
     }
 
   return (
-    <div className="mycard">
-    <div className="card auth-card input-field">
-      <h2 className="brand-logo">Instagram</h2>
+    
+    <div className='container'>
+        <div className='left'>
+        <div className="card auth-card input-field">
+      <h2 className="header">SIGNUP</h2>
       <input
         type="text"
         placeholder="Name"
@@ -56,16 +58,24 @@ const Signup = () => {
         value={password}
         onChange={(e)=>setPassword(e.target.value)}/>
 
-      <button className="btn waves-effect waves-light #616161 grey darken-2" onClick={()=>PostData()}>
+      <button className="btn" onClick={()=>PostData()}>
           SignUp
       </button>
-      <h5>
-          <Link to="/login">Already have an account ?</Link>
-      </h5>
-      <h6>
-          <Link to="/reset">Forgot password ?</Link>
-      </h6>
+      <div className='link-next'>
+      <Link to="/login">Already have an account ?</Link>
       </div>
+          
+      
+      
+      </div>
+        </div>
+        <div className='right'>
+                <div className='details'>
+                        Surge SE Internship<br/>
+                        March 2023<br/>
+                        Sanketh Gunasekara 
+                </div>
+        </div>
 </div>
   )
 }

@@ -1,47 +1,144 @@
-import React from 'react'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import React,{useState,useEffect,useContext} from 'react'
+import { userContext } from '../../App';
+
+
+
+
+
 const Home = () => {
+    const [data,setData] = useState([]);
+    const {state,dispatch} = useContext(userContext);
+    useEffect(()=>{
+       fetch('/allpost',{
+           headers:{
+               "Authorization":"Bearer "+localStorage.getItem("jwt")
+           }
+       }).then(res=>res.json())
+       .then(result=>{
+           console.log(result);
+           setData(result.posts);
+       })
+    },[])
+
+    const likePost = (id)=>{
+        fetch('/like',{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                postId:id
+            })
+        }).then(res=>res.json())
+        .then(result=>{
+                 //   console.log(result)
+          const newData = data.map(item=>{
+              if(item._id===result._id){
+                  return result
+              }else{
+                  return item
+              }
+          })
+          setData(newData)
+        }).catch(err=>{
+            console.log(err)
+        })
+  }
+
+  const unlikePost = (id)=>{
+    fetch('/unlike',{
+        method:"put",
+        headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("jwt")
+        },
+        body:JSON.stringify({
+            postId:id
+        })
+    }).then(res=>res.json())
+    .then(result=>{
+      //   console.log(result)
+      const newData = data.map(item=>{
+          if(item._id===result._id){
+              return result
+          }else{
+              return item
+          }
+      })
+      setData(newData)
+    }).catch(err=>{
+      console.log(err)
+  })
+}
+
+    const makeComment = (text,postId)=>{
+        fetch('/comment',{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            },
+            body:JSON.stringify({
+                postId,
+                text
+            })
+        }).then(res=>res.json())
+        .then(result=>{
+            console.log(result)
+            const newData = data.map(item=>{
+            if(item._id===result._id){
+                return result
+            }else{
+                return item
+            }
+        })
+        setData(newData)
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+    
+
   return (
     <div className='home'>
-        <div className='card home-card'>
-            <h5> Sanketh Gunasekara</h5>
-            <div className='card-image'>
-                <img src='https://images.unsplash.com/photo-1607368724467-0c90521abd6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=876&q=80' alt='homeImage'/>
-            </div>
-            <div className='card-content'>
-            <FavoriteBorderIcon/>
-            <h6>Title</h6>
-            <p> The Ocean</p>
-            <input type="text" placeholder="Comment"/>
-            </div>
-            
-        </div>
-        <div className='card home-card'>
-            <h5> Sanketh Gunasekara</h5>
-            <div className='card-image'>
-                <img src='https://images.unsplash.com/photo-1607368724467-0c90521abd6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=876&q=80' alt='homeImage'/>
-            </div>
-            <div className='card-content'>
-            <FavoriteBorderIcon />
-            <h6>Title</h6>
-            <p> The Ocean</p>
-            <input type="text" placeholder="Comment"/>
-            </div>
-            
-        </div>
-        <div className='card home-card'>
-            <h5> Sanketh Gunasekara</h5>
-            <div className='card-image'>
-                <img src='https://images.unsplash.com/photo-1607368724467-0c90521abd6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=876&q=80' alt='homeImage'/>
-            </div>
-            <div className='card-content'>
-            <FavoriteBorderIcon/>
-            <h6>Title</h6>
-            <p> The Ocean</p>
-            <input type="text" placeholder="Comment"/>
-            </div>
-            
-        </div>
+        {
+            data.map(item=>{
+                return(
+                    <div className='card home-card' key={item._id}>
+                        
+                            <div className='card-image'>
+                                <img src={item.photo} alt="broken" />
+                            </div>
+                        <div className='card-content'>
+                        {item.likes.includes(state._id)
+                        ?<i className="material-icons" onClick={()=>{unlikePost(item._id)}} style={{color:"red"}}>favorite</i>:
+                         <i className="material-icons" onClick={()=>{likePost(item._id)}}>favorite_border</i>} 
+                         <h5> {item.postedBy.name}</h5>
+                        <h6>{item.likes.length} Likes</h6>
+                        <h6>{item.title}</h6>
+                        <p>{item.body}</p>
+                        {
+                            item.comments.map(record=>{
+                                return(
+                                    <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text}</h6>
+                                )
+                            })
+                        }
+                        <form onSubmit={(e)=>{
+                            e.preventDefault();
+                            makeComment(e.target[0].value,item._id);
+                        }}>
+                        <input type="text" placeholder="Comment"/>
+                        </form>
+                        
+                        </div>  
+                    </div>   
+                )
+            })
+        }
+        
     </div>
   )
 }

@@ -1,6 +1,20 @@
-import React from 'react'
+import React,{useEffect,useState,useContext} from 'react';
+import {userContext} from "../../App";
 
 const Profile = () => {
+    const [mypics,setPics] = useState([]);
+    const {state,dispatch} = useContext(userContext);
+    useEffect(()=>{
+        fetch('/mypost',{
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            }
+        }).then(res=>res.json())
+        .then(result=>{
+            console.log(result)
+            setPics(result.mypost)
+        })
+     },[]);
   return (
     <div style={{maxWidth:"550px", margin:"0px auto"}}>
         <div style={{
@@ -14,7 +28,7 @@ const Profile = () => {
                 alt='not found'/>
             </div>
             <div>
-                <h4>Sanketh Gunasekara</h4>
+                <h4>{state?state.name:"loading"}</h4>
                 <div style={{display:'flex',justifyContent:"space-between", width:"109%"}}>
                     <h6>40 Post </h6>
                     <h6>580 Followers </h6>
@@ -23,15 +37,16 @@ const Profile = () => {
             </div>
         </div>
         <div className='feed'>
-            <img className='item' src="https://www.simplilearn.com/ice9/free_resources_article_thumb/tester-or-developer-what-suits-you-the-most.jpg"
-            alt='FeedImage' />
-             <img className='item' src="https://imageio.forbes.com/blogs-images/forbestechcouncil/files/2019/01/canva-photo-editor-8-7.jpg?format=jpg&width=960"
-            alt='FeedImage' />
-             <img className='item' src="https://s3.eu-west-1.amazonaws.com/redsys-prod/articles/eac8c6d69d1ce8ce0ff8824d/images/teaserImage_xxxx_croppedTeaserImage.jpg"
-            alt='FeedImage' />
+            {
+                mypics.map(item=>{
+                    return(
+                     <img key={item._id} className="item" src={item.photo} alt={item.title}/>  
+                    )
+                })
+            }
         </div>
     </div>
   )
 }
 
-export default Profile
+export default Profile;

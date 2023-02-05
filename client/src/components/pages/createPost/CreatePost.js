@@ -42,8 +42,8 @@ const CreatePost = () => {
         const data = new FormData()
         data.append("file",image)
         data.append("upload_preset","instagram-clone")
-        data.append("cloud_name","dixrhvrqx")
-        fetch("https://api.cloudinary.com/v1_1/dixrhvrqx/image/upload",{
+        data.append("cloud_name","dqewuyfxg")
+        fetch("https://api.cloudinary.com/v1_1/dqewuyfxg/image/upload",{
             method:"post",
             body:data
         })
@@ -81,7 +81,7 @@ const CreatePost = () => {
              />
            <div className="file-field input-field">
             <div className="btn #616161 grey darken-2">
-                <span>Uplaod Image</span>
+                <span>Upload Image</span>
                 <input type="file" 
                 onChange={(e)=>setImage(e.target.files[0])} 
                 />
@@ -99,4 +99,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default CreatePost;

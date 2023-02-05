@@ -8,13 +8,32 @@ const Post = mongoose.model("Post")
 router.get('/allpost',requireLogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name")                                                           //Get id and the name
-    .then(posts=>{
+    .populate("postedBy","_id name")
+    .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
+    .then((posts)=>{
         res.json({posts});
     })
     .catch(err=>{
         console.log(err);
     })
 })
+
+router.get('/getsubpost',requireLogin,(req,res)=>{
+
+    // if postedBy in following
+    Post.find({postedBy:{$in:req.user.following}})
+    .populate("postedBy","_id name")
+    .populate("comments.postedBy","_id name")
+    .sort('-createdAt')
+    .then(posts=>{
+        res.json({posts})
+    })
+    .catch(err=>{
+        console.log(err)
+    })
+})
+
 router.post('/createpost',requireLogin,(req,res)=>{                                    //Routes to create the post
     const {title,body,pic} = req.body
     if(!body || !title || !pic ){
@@ -28,8 +47,8 @@ router.post('/createpost',requireLogin,(req,res)=>{                             
     const post = new Post({
         title,
         body,
+        photo:pic,
         postedBy:req.user,
-        photo:pic
     })
     post.save().then(result=>{
         res.json({post:result})
@@ -116,6 +135,7 @@ router.delete('/deletepost/:postId',requireLogin,(req,res)=>{
         }
     })
 })
+
 
 
 module.exports = router;

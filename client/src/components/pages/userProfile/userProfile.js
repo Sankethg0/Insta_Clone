@@ -4,9 +4,9 @@ import {useParams} from 'react-router-dom';
 
 const Profile  = ()=>{
     const [userProfile,setProfile] = useState(null);
-    const {state,dispatch} = useContext(userContext);
-    const {userid} = useParams()
-    const [showfollow,setShowFollow] = useState(state?!state.following.includes(userid):true)
+    const {dispatch} = useContext(userContext);
+    const [showFollow,setShowFollow] = useState(true);
+    const {userid} = useParams();
     useEffect(()=>{
        fetch(`/user/${userid}`,{
            headers:{
@@ -15,10 +15,9 @@ const Profile  = ()=>{
        }).then(res=>res.json())
        .then(result=>{
            //console.log(result)
-         
             setProfile(result)
        })
-    },[])
+    },)
 
 
     const followUser = ()=>{
@@ -45,7 +44,7 @@ const Profile  = ()=>{
                         }
                  }
              })
-             setShowFollow(false)
+             setShowFollow(false);
         })
     }
     const unfollowUser = ()=>{
@@ -65,7 +64,7 @@ const Profile  = ()=>{
              localStorage.setItem("user",JSON.stringify(data))
             
              setProfile((prevState)=>{
-                const newFollower = prevState.user.followers.filter(item=>item != data._id )
+                const newFollower = prevState.user.followers.filter(item=>item !== data._id )
                  return {
                      ...prevState,
                      user:{
@@ -74,8 +73,7 @@ const Profile  = ()=>{
                         }
                  }
              })
-             setShowFollow(true)
-             
+             setShowFollow(true);
         })
     }
    return (
@@ -100,16 +98,16 @@ const Profile  = ()=>{
                        <h6>{userProfile.user.followers.length} followers</h6>
                        <h6>{userProfile.user.following.length} following</h6>
                    </div>
-                   {showfollow?
+                   {showFollow?
                    <button style={{
-                       margin:"10px"
-                   }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
+                        margin:"10px"
+                    }} className="btn waves-effect waves-light #64b5f6 blue darken-1"
                     onClick={()=>followUser()}
                     >
-                        Follow
-                    </button>
-                    : 
-                    <button
+                     Follow
+                 </button>
+                   :
+                   <button
                     style={{
                         margin:"10px"
                     }}
@@ -118,9 +116,9 @@ const Profile  = ()=>{
                     >
                         UnFollow
                     </button>
-                    }
+                   }
                    
-                  
+                    
 
                </div>
            </div>
@@ -139,7 +137,7 @@ const Profile  = ()=>{
        </div>
        
        
-       : <h2>loading...!</h2>}
+       : <h2>Fetching the data!</h2>}
        
        </>
    )

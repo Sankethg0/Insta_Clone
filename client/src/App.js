@@ -9,12 +9,16 @@ import Profile from './components/pages/profile/Profile';
 import CreatePost from './components/pages/createPost/CreatePost';
 import {initialState, reducer} from './reducers/userReducer';
 import UserProfile from './components/pages/userProfile/userProfile';
+import SubscribedUserPosts from './components/pages/subscribeUserPosts/subscribeUserPost';
+import Reset from './components/pages/reset/reset';
+import NewPassword from './components/pages/newPassword/newPassword';
+
 
 export const userContext = createContext();
 
 const Routing = () =>{
   const navigate = useNavigate();
-  const {state,dispatch} = useContext(userContext);
+  const {dispatch} = useContext(userContext);
   useEffect (()=>{
       const user = JSON.parse(localStorage.getItem("user"));
       if(user){
@@ -22,15 +26,18 @@ const Routing = () =>{
       }else{
         navigate('/login');
       }
-  },[])
+  },)
   return(
     <Routes>
-        <Route path="/" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/createpost" element={<CreatePost />} />
+        <Route exact path="/createpost" element={<CreatePost />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile/:userid" element={<UserProfile />} />
+        <Route exact path="/myfollowingpost" element={<SubscribedUserPosts />} />
+        <Route exact path="/reset" element={<Reset />} />
+        <Route path="/reset/:token" element={<NewPassword />} />
     </Routes>
   )
 }

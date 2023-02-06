@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 const Home  = ()=>{
     const [data,setData] = useState([])
-    const {state} = useContext(userContext)
+    const {state,dispatch} = useContext(userContext)
     useEffect(()=>{
        fetch('/getsubpost',{
            headers:{

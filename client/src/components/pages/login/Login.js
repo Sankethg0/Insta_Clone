@@ -4,7 +4,6 @@ import M from 'materialize-css'
 import {userContext} from '../../../App'
 import '../../../index.css';
 import './login.css';
-import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
     const {state,dispatch} = useContext(userContext);
@@ -42,9 +41,7 @@ const Login = () => {
             console.log(err)
         })
     }
-    function onChange(value) {
-        console.log("Captcha value:", value);
-      }
+   
   return (
         <div className="container">
             <div className='left'>
@@ -62,9 +59,7 @@ const Login = () => {
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
                         />
-                        <ReCAPTCHA sitekey="6Lehg1QkAAAAABOZWpnDsigld3yE8gAX38tTctXb"
-                            onChange={onChange}
-                        />
+                      
                     <button className="btn " onClick={()=>PostData()}>
                         Login
                     </button>
@@ -84,8 +79,7 @@ const Login = () => {
                 </div>
                       
             </div>
-                
-                
+               
         </div>  
            
   )

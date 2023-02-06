@@ -18,7 +18,7 @@ export const userContext = createContext();
 
 const Routing = () =>{
   const navigate = useNavigate();
-  const {dispatch} = useContext(userContext);
+  const {state,dispatch} = useContext(userContext);
   useEffect (()=>{
       const user = JSON.parse(localStorage.getItem("user"));
       if(user){
@@ -26,7 +26,7 @@ const Routing = () =>{
       }else{
         navigate('/login');
       }
-  },)
+  },[])
   return(
     <Routes>
         <Route exact path="/" element={<Home />} />

@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 import M from 'materialize-css'
-import ReCAPTCHA from "react-google-recaptcha";
+
 
 
 const SignUp = () => {
@@ -16,7 +16,7 @@ const SignUp = () => {
             if(url){
                 uploadFields()
             }
-        },)
+        },[url])
 
   const uploadPic = ()=>{
       const data = new FormData()
@@ -73,16 +73,14 @@ const SignUp = () => {
         uploadFields()
     }
     }
-    function onChange(value) {
-        console.log("Captcha value:", value);
-      }
+  
 
   return (
     
     <div className='container'>
         <div className='left'>
         <div className="card auth-card input-field">
-        <h2>Instagram</h2>
+        <h2>LOGIN</h2>
             <input
             type="text"
             placeholder="name"
@@ -103,16 +101,14 @@ const SignUp = () => {
             />
             <div className="file-field input-field">
             <div className="btn #64b5f6 blue darken-1">
-                <span>Upload pic</span>
+                <span>Profile Picture</span>
                 <input type="file" onChange={(e)=>setImage(e.target.files[0])} />
             </div>
             <div className="file-path-wrapper">
                 <input className="file-path validate" type="text" />
             </div>
             </div>
-            <ReCAPTCHA sitekey="6Lehg1QkAAAAABOZWpnDsigld3yE8gAX38tTctXb"
-                            onChange={onChange}
-                        />
+            
             <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
             onClick={()=>PostData()}
             >

@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 
 const Profile  = ()=>{
     const [userProfile,setProfile] = useState(null);
-    const {dispatch} = useContext(userContext);
+    const {state,dispatch} = useContext(userContext);
     const [showFollow,setShowFollow] = useState(true);
     const {userid} = useParams();
     useEffect(()=>{
@@ -17,7 +17,7 @@ const Profile  = ()=>{
            //console.log(result)
             setProfile(result)
        })
-    },)
+    },[])
 
 
     const followUser = ()=>{

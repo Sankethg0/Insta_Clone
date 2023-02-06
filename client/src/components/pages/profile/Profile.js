@@ -53,7 +53,7 @@ const Profile = () => {
              console.log(err)
          })
         }
-     },)
+     },[image])
      const updatePhoto = (file)=>{
          setImage(file)
      }
